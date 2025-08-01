@@ -1,1 +1,42 @@
+<odoo>
+    <record id="view_hybrid_bar_form" model="ir.ui.view">
+        <field name="name">hybrid.bar.form</field>
+        <field name="model">hybrid.bar.pending</field>
+        <field name="arch" type="xml">
+            <form string="Pending Payment">
+                <sheet>
+                    <group>
+                        <field name="customer_name"/>
+                        <field name="amount"/>
+                        <field name="assigned_products" widget="many2many_tags"/>
+                        <field name="state"/>
+                    </group>
+                    <footer>
+                        <button string="Assign Products" type="object" name="assign_products" class="btn-primary"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
+    <record id="view_hybrid_bar_tree" model="ir.ui.view">
+        <field name="name">hybrid.bar.tree</field>
+        <field name="model">hybrid.bar.pending</field>
+        <field name="arch" type="xml">
+            <tree string="Pending Payments">
+                <field name="customer_name"/>
+                <field name="amount"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <menuitem id="menu_hybrid_bar_root" name="Hybrid Bar"/>
+    <menuitem id="menu_hybrid_bar_pending" name="Pending Payments" parent="menu_hybrid_bar_root" action="action_hybrid_bar_pending"/>
+
+    <record id="action_hybrid_bar_pending" model="ir.actions.act_window">
+        <field name="name">Pending Payments</field>
+        <field name="res_model">hybrid.bar.pending</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
