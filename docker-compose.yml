@@ -14,17 +14,15 @@ services:
       - ./custom_addons:/mnt/extra-addons
 FROM odoo:16.0
 
-# Set environment variables for PostgreSQL
-ENV PGHOST=${DB_HOST}
-ENV PGPORT=${DB_PORT}
-ENV PGUSER=${DB_USER}
-ENV PGPASSWORD=${DB_PASSWORD}
-ENV PGDATABASE=${DB_NAME}
-
 # Copy custom addons
 COPY ./custom_addons /mnt/extra-addons
 
 # Expose Odoo default port
 EXPOSE 8069
 
-CMD ["odoo", "-d", "${DB_NAME}", "--db_host=${DB_HOST}", "--db_port=${DB_PORT}", "--db_user=${DB_USER}", "--db_password=${DB_PASSWORD}", "--addons-path=/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons"]
+CMD ["odoo",
+     "--db_host=dpg-d26k3c95pdvs73a7ciug-a.frankfurt-postgres.render.com",
+     "--db_port=5432",
+     "--db_user=kireshlamar_db_user",
+     "--db_password=4iNX6hXHTUsdjeoTDTQcgOFrd8WCSLW4",
+     "--addons-path=/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons"]
