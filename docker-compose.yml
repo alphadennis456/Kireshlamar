@@ -1,28 +1,31 @@
-version: '3'
+version: '3.1'
+
 services:
   web:
     build: .
     ports:
       - "8069:8069"
+    depends_on:
+      - db
     environment:
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=odoo
+      - DB_PASSWORD=odoo
+      - DB_NAME=postgres
     volumes:
       - ./custom_addons:/mnt/extra-addons
-FROM odoo:16.0
 
-# Copy custom addons
-COPY ./custom_addons /mnt/extra-addons
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
-# Expose Odoo default port
-EXPOSE 8069
-
-CMD ["odoo",
-     "--db_host=dpg-d26k3c95pdvs73a7ciug-a.frankfurt-postgres.render.com",
-     "--db_port=5432",
-     "--db_user=kireshlamar_db_user",
-     "--db_password=4iNX6hXHTUsdjeoTDTQcgOFrd8WCSLW4",
-     "--addons-path=/mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons"]
+volumes:
+  pgdata:
